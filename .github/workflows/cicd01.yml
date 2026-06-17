@@ -17,5 +17,5 @@ jobs:
 
       - name: github actions
         run: |
-          echo ${{secrets.GITHUB_SHA}}
+          echo ${{github.GITHUB_SHA}}
           echo $GITHUB_REPOSITORY
