@@ -10,3 +10,7 @@ jobs:
     steps:
       - name: print hello world
         run: echo "hello world"
+      - name: multiple command
+        run: |
+          echo "good"
+          echo "morning"
