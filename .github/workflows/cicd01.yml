@@ -10,7 +10,18 @@ jobs:
     steps:
       - name: Execute remote SSH commands using password
         uses: appleboy/ssh-action@v1
+        env:
+          APPLICATION_PROPERTIES: ${{ secrets.APPLICATION_PROPERTIES }}
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.KEY }}
+          envs: APPLICATION_PROPERTIES
+          script: |
+            cd /home/ubuntu/aws
+            git pull origin main
+            rm -rf src/main/resources/application.yaml
+            echo "$APPLICATION_PROPERTIES" > src/main/resources/application.yml
+            ./gradlew clean build -x test
+            sudo fuser -k -n tcp 80 || true
+            sudo nohup java -jar /home/ubuntu/aws/build/libs/aws-0.0.1-SNAPSHOT.jar &
